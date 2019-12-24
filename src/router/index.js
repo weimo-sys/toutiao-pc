@@ -2,6 +2,7 @@
 import VueRouter from 'vue-router'
 import Vue from 'vue'
 
+// @是vuecli提供的绝对路径(./src)
 import Login from '@/views/login'
 
 Vue.use(VueRouter)
