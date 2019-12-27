@@ -4,12 +4,12 @@
     <el-card class="my-card">
         <img src="../../assets/logo_index.png" alt="">
         <!-- 表单组件 -->
-        <el-form :model="loginForm">
+        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" status-icon>
             <!-- 表单项 -->
-            <el-form-item>
+            <el-form-item prop="mobile">
                 <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="code">
                 <el-input v-model="loginForm.code" placeholder="请输入验证码" style="width:238px;margin-right:10px"></el-input>
                 <el-button>发送验证码</el-button>
             </el-form-item>
@@ -19,7 +19,7 @@
                 <el-checkbox :value="true">我已经阅读和同意用户协议和隐私条款</el-checkbox>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" style="width:100%">登录</el-button>
+                <el-button type="primary" style="width:100%" @click="login">登录</el-button>
             </el-form-item>
         </el-form>
     </el-card>
@@ -27,13 +27,59 @@
 </template>
 
 <script>
+// 导入工具模块
+import store from '@/store'
+
 export default {
   data () {
+    const checkMobile = (rule, value, callback) => {
+      // 校验逻辑： 1开头  第二位 3-9之间  最后九个数字结尾
+      if (!/^1[3-9]\d{9}$/.test(value)) {
+        return callback(new Error('手机号码格式有误'))
+      }
+      callback()
+    }
     return {
       loginForm: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
+      },
+      // 校验规则对象
+      loginRules: {
+        mobile: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { validator: checkMobile, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { len: 6, message: '请输入6位验证码', trigger: 'blur' }
+        ]
       }
+    }
+  },
+  methods: {
+    // 登录 login()方法
+    login () {
+      // 先整体表单校验  this.$refs.loginForm获取组件
+      this.$refs.loginForm.validate((valid) => {
+        // valid（是一个形参自定义名称） 判断是否校验成功
+        if (valid) {
+          // 进行登录
+          this.$http.post(
+            'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+            this.loginForm
+          ).then(res => {
+            // 登录成功       13911111111  246810
+            // res 响应对象 res.data 是响应体
+            // 存储用户信息
+            store.setUser(res.data.data)
+            this.$router.push('/')
+          }).catch(e => {
+            // e 错误对象
+            this.$message.error('手机号或验证码有误')
+          })
+        }
+      })
     }
   }
 }
