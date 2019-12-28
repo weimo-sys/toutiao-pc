@@ -6,6 +6,9 @@
 
 <script>
 export default {
+  created () {
+    this.$http.get('user/profile').then(res => { console.log(res.data) }).catch(e => { console.log(e) })
+  }
 }
 </script>
 
