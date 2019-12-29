@@ -61,23 +61,35 @@ export default {
     // 登录 login()方法
     login () {
       // 先整体表单校验  this.$refs.loginForm获取组件
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(async (valid) => {
         // valid（是一个形参自定义名称） 判断是否校验成功
         if (valid) {
-          // 进行登录
-          this.$http.post(
-            'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
-            this.loginForm
-          ).then(res => {
-            // 登录成功       13911111111  246810
-            // res 响应对象 res.data 是响应体
+          // // 进行登录
+          // this.$http.post(
+          //   'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+          //   this.loginForm
+          // ).then(res => {
+          //   // 登录成功
+          //   // res 响应对象 res.data 是响应体
+          //   // 存储用户信息
+          //   store.setUser(res.data.data)
+          //   this.$router.push('/')
+          // }).catch(e => {
+          //   // e 错误对象
+          //   this.$message.error('手机号或验证码有误')
+          // })
+
+          // 使用try{}catch(e){}可以捕获和处理异常
+          try {
+            const res = await this.$http.post('authorizations', this.loginForm)
             // 存储用户信息
+            // console.log(res)
             store.setUser(res.data.data)
+
             this.$router.push('/')
-          }).catch(e => {
-            // e 错误对象
+          } catch (e) {
             this.$message.error('手机号或验证码有误')
-          })
+          }
         }
       })
     }

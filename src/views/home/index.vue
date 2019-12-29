@@ -49,15 +49,16 @@
         <span class="el-icon-s-fold icon" @click="toggleAside"></span>
         <span class="text">江苏传智播客科技教育有限公司</span>
         <!-- 下拉菜单 start-->
-        <el-dropdown>
+        <el-dropdown class="my-dropdown" @command="handle">
           <span class="el-dropdown-link">
-            <img src="../../assets/avatar.jpg" alt />
-            <span>用户名</span>
+            <img class="user-icon" :src="photo" alt />
+            <span class="user-name">{{ name }}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出程序</el-dropdown-item>
+            <!-- 分别用两种方法实现了个人设置和退出程序  @click.native   command="setting"-->
+            <el-dropdown-item icon="el-icon-setting" command="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock" @click.native="logout()">退出程序</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <!-- 下拉菜单 end-->
@@ -70,18 +71,45 @@
 </template>
 
 <script>
+// 导入store模块
+import store from '@/store'
 export default {
   data () {
     return {
       // 表示做菜单默认展开
-      isOpen: true
+      isOpen: true,
+      // 用户名
+      name: '',
+      // 头象
+      photo: ''
     }
+  },
+  created () {
+    // 当组件创建成功的时候，从本地获取值，设置给用户名，头像赋值
+    const user = store.getUser()
+    console.log(user)
+    this.name = user.name
+    this.photo = user.photo
   },
   methods: {
     toggleAside () {
       // 切换侧边栏
       this.isOpen = !this.isOpen
       // 宽度 logo 导航菜单组件
+    },
+    // 个人设置
+    setting () {
+      this.$router.push('/setting')
+    },
+    // 退出登录
+    logout () {
+      // 清除本地用户信息
+      store.delUser()
+      // 跳转
+      this.$router.push('/login')
+    },
+    handle (command) {
+      this[command]()
     }
   }
 }
@@ -122,13 +150,15 @@ export default {
     font-size: 16px;
     vertical-align: middle;
   }
-  .el-dropdown {
+  .my-dropdown {
     float: right;
-    img {
+    .user-icon {
+      width: 30px;
+        height: 30px;
       vertical-align: middle;
       margin-right: 5px;
     }
-    span {
+    .user-icon {
       vertical-align: middle;
       color: #333;
       font-weight: bold;

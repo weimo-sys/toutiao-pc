@@ -14,6 +14,9 @@ import Welcome from '@/views/welcome'
 // 导入404组件
 import NotFound from '@/views/404'
 
+// 导入article组件
+import Article from '@/views/article'
+
 // 导入工具配置
 import store from '@/store'
 
@@ -28,7 +31,8 @@ const router = new VueRouter({
       component: Home,
       // 欢迎页面
       children: [
-        { path: '/', component: Welcome }
+        { path: '/', component: Welcome },
+        { path: '/article', component: Article }
       ]
     },
     // 404页面 (* 通配 除了上面所有的路由地址外，通配其它所有地址)
