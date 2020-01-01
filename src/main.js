@@ -13,12 +13,17 @@ import axios from '@/api'
 // 提供的一个绝对路径别名
 // import router from '@/router'
 import router from './router'
+
+// 注册自己的插件
+import Plugin from '@/plugin'
+Vue.use(Plugin)
+
 Vue.prototype.$http = axios
 
 // 注册原型属性
 Vue.prototype.$http = axios
-
 Vue.use(ElementUI)
+
 // 在控制台输出日志，日志
 Vue.config.productionTip = false
 

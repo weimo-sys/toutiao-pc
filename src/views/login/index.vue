@@ -41,7 +41,7 @@ export default {
     }
     return {
       loginForm: {
-        mobile: '13911111111',
+        mobile: '',
         code: '246810'
       },
       // 校验规则对象
