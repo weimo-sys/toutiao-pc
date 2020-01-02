@@ -14,6 +14,8 @@ import axios from '@/api'
 // import router from '@/router'
 import router from './router'
 
+// 导入样式
+import '@/styles/index.less'
 // 注册自己的插件
 import Plugin from '@/plugin'
 Vue.use(Plugin)

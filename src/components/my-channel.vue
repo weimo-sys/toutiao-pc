@@ -1,4 +1,4 @@
-<template>
+ <template>
   <!-- select 选择器 -->
   <el-select :value="value" @change="changeChannel" clearable placeholder="请选择">
     <el-option v-for="item in channelOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>

@@ -20,6 +20,9 @@ import Article from '@/views/article'
 // 导入工具配置
 import store from '@/store'
 
+// 导入image 组件
+import Image from '@/views/image'
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -32,7 +35,8 @@ const router = new VueRouter({
       // 欢迎页面
       children: [
         { path: '/', component: Welcome },
-        { path: '/article', component: Article }
+        { path: '/article', component: Article },
+        { path: '/image', component: Image }
       ]
     },
     // 404页面 (* 通配 除了上面所有的路由地址外，通配其它所有地址)
